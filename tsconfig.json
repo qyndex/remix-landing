@@ -4,6 +4,10 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ],
   "compilerOptions": {
     "lib": [
       "DOM",
@@ -28,7 +32,8 @@
       ]
     },
     "types": [
-      "vite/client"
+      "vite/client",
+      "@testing-library/jest-dom"
     ]
   }
 }
