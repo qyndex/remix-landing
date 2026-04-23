@@ -9,7 +9,31 @@ export default [
   js.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
-    languageOptions: { parser: tsParser, parserOptions: { ecmaFeatures: { jsx: true } } },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+      globals: {
+        // Browser globals
+        document: "readonly",
+        window: "readonly",
+        HTMLFormElement: "readonly",
+        HTMLImageElement: "readonly",
+        FormData: "readonly",
+        Request: "readonly",
+        Response: "readonly",
+        URLSearchParams: "readonly",
+        URL: "readonly",
+        fetch: "readonly",
+        console: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        // Node globals
+        process: "readonly",
+        __dirname: "readonly",
+        // React
+        React: "readonly",
+      },
+    },
     plugins: {
       "@typescript-eslint": tsPlugin,
       react: reactPlugin,

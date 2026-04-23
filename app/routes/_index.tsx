@@ -2,7 +2,6 @@ import type { MetaFunction, LoaderFunctionArgs, ActionFunctionArgs } from "@remi
 import { json } from "@remix-run/node";
 import {
   useLoaderData,
-  useActionData,
   useFetcher,
   isRouteErrorResponse,
   useRouteError,
@@ -26,7 +25,7 @@ interface Plan {
   period: string;
   features: string[];
   cta: string;
-  featured?: boolean;
+  featured: boolean;
 }
 
 interface Testimonial {
@@ -84,9 +83,9 @@ export async function loader({ request: _request }: LoaderFunctionArgs) {
       { icon: "\uD83D\uDCC8", title: "Built-in Analytics", body: "Real-time dashboards with no extra setup." },
     ] satisfies Feature[],
     plans: [
-      { name: "Hobby", price: "$0", period: "/mo", features: ["1 project", "Community support", "512 MB"], cta: "Start Free" },
+      { name: "Hobby", price: "$0", period: "/mo", featured: false, features: ["1 project", "Community support", "512 MB"], cta: "Start Free" },
       { name: "Pro", price: "$29", period: "/mo", featured: true, features: ["Unlimited projects", "Priority support", "50 GB", "Custom domains"], cta: "Start Trial" },
-      { name: "Enterprise", price: "Custom", period: "", features: ["SSO", "SLA", "Dedicated CSM", "Audit logs"], cta: "Contact Sales" },
+      { name: "Enterprise", price: "Custom", period: "", featured: false, features: ["SSO", "SLA", "Dedicated CSM", "Audit logs"], cta: "Contact Sales" },
     ] satisfies Plan[],
     testimonials: (testimonialsResult.data ?? []) as Testimonial[],
     faqs: (faqsResult.data ?? []) as Faq[],

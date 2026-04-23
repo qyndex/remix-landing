@@ -27,6 +27,7 @@ export interface Database {
           email?: string;
           name?: string | null;
         };
+        Relationships: [];
       };
       testimonials: {
         Row: {
@@ -55,6 +56,7 @@ export interface Database {
           avatar_url?: string | null;
           featured?: boolean;
         };
+        Relationships: [];
       };
       faqs: {
         Row: {
@@ -77,10 +79,12 @@ export interface Database {
           answer?: string;
           sort_order?: number;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }

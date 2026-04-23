@@ -35,23 +35,20 @@ test.describe("Landing page", () => {
   });
 
   // -------------------------------------------------------------------------
-  // CTA buttons
+  // Waitlist form
   // -------------------------------------------------------------------------
-  test("Get Started Free CTA is visible and links to /signup", async ({ page }) => {
-    const cta = page.getByRole("link", { name: /get started free/i });
-    await expect(cta).toBeVisible();
-    await expect(cta).toHaveAttribute("href", "/signup");
+  test("waitlist form is visible in hero", async ({ page }) => {
+    await expect(page.getByLabel(/email address/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: /join waitlist/i })).toBeVisible();
   });
 
-  test("Watch Demo CTA is visible and links to /demo", async ({ page }) => {
-    const demo = page.getByRole("link", { name: /watch demo/i });
-    await expect(demo).toBeVisible();
-    await expect(demo).toHaveAttribute("href", "/demo");
+  test("waitlist form has optional name field", async ({ page }) => {
+    await expect(page.getByLabel(/your name/i)).toBeVisible();
   });
 
-  test("clicking Get Started Free navigates to /signup", async ({ page }) => {
-    await page.getByRole("link", { name: /get started free/i }).click();
-    await expect(page).toHaveURL(/\/signup/);
+  test("email field is required", async ({ page }) => {
+    const emailInput = page.getByLabel(/email address/i);
+    await expect(emailInput).toHaveAttribute("required", "");
   });
 
   // -------------------------------------------------------------------------
@@ -69,6 +66,21 @@ test.describe("Landing page", () => {
 
   test("feature cards show body text", async ({ page }) => {
     await expect(page.getByText(/push to deploy in under 30 seconds/i)).toBeVisible();
+  });
+
+  // -------------------------------------------------------------------------
+  // Testimonials section (DB-driven — may be empty without seed data)
+  // -------------------------------------------------------------------------
+  test("testimonials section renders heading when data exists", async ({ page }) => {
+    const heading = page.getByRole("heading", { name: /loved by developers/i });
+    // Section is conditionally rendered — check it exists OR is absent gracefully
+    const count = await heading.count();
+    if (count > 0) {
+      await expect(heading).toBeVisible();
+      // At least one testimonial card should be present
+      const cards = page.locator(".testimonial-card");
+      expect(await cards.count()).toBeGreaterThan(0);
+    }
   });
 
   // -------------------------------------------------------------------------
@@ -114,6 +126,19 @@ test.describe("Landing page", () => {
   });
 
   // -------------------------------------------------------------------------
+  // FAQs section (DB-driven — may be empty without seed data)
+  // -------------------------------------------------------------------------
+  test("FAQs section renders heading when data exists", async ({ page }) => {
+    const heading = page.getByRole("heading", { name: /frequently asked questions/i });
+    const count = await heading.count();
+    if (count > 0) {
+      await expect(heading).toBeVisible();
+      const items = page.locator(".faq-item");
+      expect(await items.count()).toBeGreaterThan(0);
+    }
+  });
+
+  // -------------------------------------------------------------------------
   // Accessibility
   // -------------------------------------------------------------------------
   test("feature list items have aria-label on the parent list", async ({ page }) => {
@@ -128,6 +153,11 @@ test.describe("Landing page", () => {
     expect(h2Count).toBeGreaterThanOrEqual(2);
   });
 
+  test("waitlist form has accessible aria-label", async ({ page }) => {
+    const form = page.locator("form[aria-label='Join the waitlist']");
+    await expect(form).toBeVisible();
+  });
+
   // -------------------------------------------------------------------------
   // Responsive / layout smoke
   // -------------------------------------------------------------------------
@@ -135,6 +165,6 @@ test.describe("Landing page", () => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/");
     await expect(page.locator(".hero")).toBeVisible();
-    await expect(page.getByRole("link", { name: /get started free/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /join waitlist/i })).toBeVisible();
   });
 });
