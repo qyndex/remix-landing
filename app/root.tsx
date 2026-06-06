@@ -9,9 +9,13 @@ import {
 } from "@remix-run/react";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import stylesheet from "./tailwind.css?url";
+import globalStyles from "./styles/global.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
+  // The landing page's section styles live as semantic classes in
+  // styles/global.css; without this link the page renders unstyled.
+  { rel: "stylesheet", href: globalStyles },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
 ];
 
